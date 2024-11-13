@@ -1,0 +1,49 @@
+<%- include('./partials/header')%>
+
+<div class="w-full min-h-screen bg-zinc-900 text-white p-10">
+
+    <div class="nav mb-2 flex justify-between" >
+        <a class="text-blue-500 " href="/">Go To Home</a>
+        <div>
+            <a class="text-green-500 mr-6" href="/users/profile">Back to Profile</a>
+            
+            <a class="text-red-500 " href="/users/logout">Logout</a>
+        </div>
+
+    </div>
+    <span class="w-full p-2 ">
+        <h2 class="text-3xl font-light">Update Profile</h2>
+       
+    </span>
+
+
+    <form autocomplete="off" action="/users/profile/update" method="post">
+         
+        <div>
+        <input class="px-3 py-2 m-2 bg-transparent rounded-md outline-none border-2 border-zinc-800" type="text" placeholder="Your name" value="<%=user.name%>" name="name">
+        <input class="px-3 py-2 m-2 bg-transparent rounded-md outline-none border-2 border-zinc-800" type="text" placeholder="username" value="<%=user.username%>" name="username">
+        <input class="px-3 py-2 m-2 bg-transparent rounded-md outline-none border-2 border-zinc-800" type="number" placeholder="age" value="<%=user.age%>" name="age">
+        </div>
+        <input class="px-4 py-2 m-2 bg-blue-500 rounded-md outline-none" type="submit" value="Update Profile Details">
+
+    </form>
+
+    <span class="w-full p-2 ">
+        <h2 class="text-3xl font-light">Upload profile photo</h2>
+    </span>
+    
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image">
+        <input class="w-40 px-3 py-2 bg-yellow-500 text-sm rounded-md mt-5 block" type="submit" value="Upload">
+
+    </form>
+
+
+   
+  
+
+</div>
+
+
+<%- include('./partials/footer') %>
