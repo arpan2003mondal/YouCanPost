@@ -33,10 +33,13 @@
     </span>
     
 
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="image">
-        <input class="w-40 px-3 py-2 bg-yellow-500 text-sm rounded-md mt-5 block" type="submit" value="Upload">
+    <form action="/users/profileImage/upload" method="post" enctype="multipart/form-data">
+        <div class="mb-4">
+         
+            <input name="image" type="file" class="py-2 px-4 rounded" value="Select File">
+            <input class="w-40 px-3 py-2 bg-yellow-500 text-sm rounded-md mt-5 block" type="submit" value="Upload">
 
+        </div>
     </form>
 
 

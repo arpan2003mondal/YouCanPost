@@ -6,6 +6,8 @@ const postModel = require("../models/post-model");
 const bcrypt = require("bcrypt");
 const isLoggedIn = require("../middlewares/isLoggedIn");
 
+const upload = require("../config/multer-config");
+
 router.get('/create',(req,res)=>{
     res.render('register');
 })
@@ -89,5 +91,21 @@ router.post('/password/change',isLoggedIn, async (req,res)=>{
      console.log(err.message);
     }  
  });
+
+router.post("/profileImage/upload",isLoggedIn,upload.single("image"), async (req,res)=>{
+   try{
+    let user = await userModel.findOne({email:req.user.email});
+
+//    console.log(user);
+//    console.log(req.file.buffer);
+    user.profileImage = req.file.buffer;
+    await user.save();
+
+    res.redirect("/users/profile");
+   }
+   catch(err){
+    console.log(err.message);
+   }
+});
 
 module.exports = router;

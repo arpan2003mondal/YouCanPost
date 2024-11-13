@@ -16,9 +16,14 @@
     </div>
 
     <div class="flex item-start gap-3">
-        <div class="w-10 h-10  overflow-hidden">
-           
-        </div>
+        <div class="w-10 h-10 rounded-lg overflow-hidden">
+            <% if (user.profileImage && user.profileImage.length) { %>
+              <img class="h-full object-cover" src="data:image/jpeg;base64,<%= user.profileImage.toString('base64') %>" alt="">
+            <% } else { %>
+              <img class="h-full object-cover" src="../public\images\default.png" alt="Default Profile Image">
+            <% } %>
+          </div>
+          
         <h2 class="text-3xl font-light">Hello <%=user.name %></h2>
     </div>
 
