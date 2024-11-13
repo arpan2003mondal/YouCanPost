@@ -1,0 +1,26 @@
+<%- include('./partials/header') %>
+
+<div class="w-full min-h-screen bg-zinc-900 text-white p-10">
+
+    <div class="nav mb-2 flex justify-between" >
+        <a class="text-blue-500 " href="/">Go To Home</a>
+        <a class="text-red-500 " href="/users/logout">Logout</a>
+    </div>
+
+    <span class="w-full p-2 ">
+        <h2 class="text-3xl font-light">Edit Post</h2>
+       
+    </span>
+
+    <form autocomplete="off" action="/posts/update/<%= post._id %>" method="post">
+        <textarea class="block outline-none bg-transparent border-2 border-zinc-800 resize-none rounded-md p-2 w-1/2" name="content" ><%= post.content %></textarea>
+        <input class="w-40 px-3 py-2 bg-yellow-500 text-sm rounded-md m-2 block" type="submit" value="Update your post">
+    </form>
+
+   
+  
+
+</div>
+
+   
+<%- include('./partials/footer') %>

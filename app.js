@@ -5,6 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const db = require("./config/mongoose-connection");
 
+require("dotenv").config();
 
 
 const usersRouter = require("./routes/usersRouter");

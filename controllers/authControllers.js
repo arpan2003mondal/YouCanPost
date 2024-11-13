@@ -2,6 +2,7 @@ const userModel = require("../models/user-model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const {generateToken} = require("../utills/generateToken");
 
 
 module.exports.registerUser = async (req,res) => {
@@ -23,11 +24,10 @@ module.exports.registerUser = async (req,res) => {
                     age
                 });    
         
-            let token = jwt.sign({ email: email, userid: createdUser._id }, "adcxs");
+            let token = generateToken(user);
             res.cookie("token", token);
-            res.redirect('/login');    
-            });
-          
+            res.redirect('/users/login');    
+            });  
         });
     }
     catch(err){
@@ -47,7 +47,7 @@ module.exports.loginUser = async (req,res) => {
 
         if(result) {
             
-            let token = jwt.sign({ email: email, userid: user._id }, "adcxs");
+            let token = generateToken(user);
             res.cookie("token", token);
             res.status(200).redirect("/users/profile");
 
