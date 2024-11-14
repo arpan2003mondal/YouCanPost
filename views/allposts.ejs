@@ -1,33 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
+<%- include('./partials/header') %>
 
-    <!-- <div class="w-full min-h-screen bg-zinc-900 text-white p-10"> -->
+<% if(messages.success && messages.success.length > 0){ %>
+    <div class="absolute top-20 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= messages.success %>
+        </span>
+    </div>
+    <% } %>
+
+    <% if(messages.error && messages.error.length > 0){ %>
+        <div class="absolute top-20 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+            <span class="inline-block mt-1 mb-1 text-white">
+                <%= messages.error %>
+            </span>
+        </div>
+        <% } %>  
 
     <div class="w-full min-h-screen bg-zinc-900 text-white p-10 flex flex-col">
-
-        <div class="nav mb-2 flex justify-between" >
-           
-            <div class="flex gap-8">
-                <a class="text-orange-500 " href="/users/profile">Back to Profile</a>
-                <a class="text-blue-500 " href="/">Go To Home</a>
-                  
-            </div>
-
-            <div class="flex gap-5">
-               
-                <a class="text-red-500 " href="/users/logout">Logout</a>
-            </div>
-        </div>
         
 
-        <div class="posts mt-5 flex-1 overflow-hidden">
+        <div class="posts mt-10 flex-1 overflow-hidden">
             <h2 class="text-green-400 text-2xl" >All Posts</h2>
 
             <% if(posts.length === 0){ %>
@@ -36,24 +28,43 @@
 
             <div class="postcontainer mt-5 grid grid-cols-2 p-2 gap-x-4 ">
               <%  posts.reverse().forEach(function(post){ %>
-                <!-- <div class="post w-1/2 mb-2 mr-2 bg-zinc-700 p-4 rounded-md border-2 border-zinc-800 "> -->
-                <div class="post  m-2 bg-zinc-700  rounded-md  border-zinc-800 p-4 border-b border-gray-300">    
-                    <h4 class="text-blue-500">@<%=post.user.username%></h4>
-                    <p class="text-sm tracking-tight"><%= post.content %></p>
-                    <div class=" flex gap-5 mt-2">
-                        <small class="inline-block"><%= post.likes.length %> likes</small>
-                        <small class="inline-block"><%= post.unlikes.length %> unlikes</small>
+              
+                <div class="post flex justify-between m-2 bg-zinc-700  rounded-md  border-zinc-800 p-4 border-b border-gray-300">  
+                    
+                    <div class="flex justify-between flex-col flex-1">
+                        <div>
+                            <h4 class="text-blue-500 mb-2">@<%=post.user.username%></h4>
+                            <p class="text-sm tracking-tight"><%= post.content %></p>
+                        </div>
+
+                        <div class="flex items-center gap-7">
+                            <div class=" flex gap-5 mt-2">
+                                <small class="inline-block"><%= post.likes.length %> likes</small>
+                                <small class="inline-block"><%= post.unlikes.length %> unlikes</small>
+                            </div>
+                     
+                            <div class="btns flex gap-5 mt-2 ">
+                                <a class="text-blue-500" href="/posts/like/<%= post._id %>">                             
+                                    Like
+                                </a>
+                                <a class="text-blue-500" href="/posts/unlike/<%= post._id %>">
+                                    Unlike
+                                </a>
+            
+                            </div>
+                        </div>
                     </div>
-                 
-                    <div class="btns flex gap-5 mt-2">
-                        <a class="text-blue-500" href="/posts/like/<%= post._id %>">
-                        
-                            Like
-                        </a>
-                        <a class="text-blue-500" href="/posts/unlike/<%= post._id %>">
-                            Unlike
-                        </a>
-    
+
+                    <div class="flex-shrink-0 w-16 h-16 ">                 
+                        <% if(post.user.profileImage) { %>
+                            <img class="w-12 h-12 rounded-full object-auto" 
+                                 src="data:image/jpeg;base64,<%= post.user.profileImage.toString('base64') %>" 
+                                 alt="<%= post.user.username %>'s Profile Image">
+                        <% } else { %>
+                            <img class="w-12 h-12 rounded-full" 
+                                 src="/images/default.png" 
+                                 alt="Default Profile Image">
+                        <% } %>
                     </div>
                 </div>
              
@@ -66,6 +77,5 @@
       
 
     </div>
-    
-</body>
-</html>
+
+ <%- include('./partials/footer') %>

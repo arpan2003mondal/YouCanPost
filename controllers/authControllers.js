@@ -12,10 +12,16 @@ module.exports.registerUser = async (req,res) => {
 
         let user = await userModel.findOne({email});
     
-        if(user) return res.status(500).send("User already registered");
+        if(user) {
+            req.flash("error","You already have an account , please login");
+            return res.redirect("/");
+        }
     
         bcrypt.genSalt(10,function(err,salt){
             bcrypt.hash(password,salt, async function(err,hash){
+
+                if(err) return res.status(504).send(err.message);
+
                 let createdUser = await userModel.create({
                     name,
                     username,
@@ -24,9 +30,8 @@ module.exports.registerUser = async (req,res) => {
                     age
                 });    
         
-            let token = generateToken(user);
-            res.cookie("token", token);
-            res.redirect('/users/login');    
+            req.flash("success"," user created successfully,please login");
+            return res.redirect("/");  
             });  
         });
     }
@@ -41,17 +46,23 @@ module.exports.loginUser = async (req,res) => {
 
     let user = await userModel.findOne({email});
 
-    if(!user) return res.status(500).send("Something went wrong !!!");
+    if(!user) {
+        req.flash("error","Wrong email or password");
+        return res.redirect("/");
+    }
 
     bcrypt.compare(password,user.password,function(err,result){
 
-        if(result) {
-            
+        if(result) {           
             let token = generateToken(user);
             res.cookie("token", token);
-            res.status(200).redirect("/users/profile");
-
-        }else res.redirect('/users/login');
+            req.flash("success"," Logged in successfully");
+            return res.redirect("/users/profile");
+        }
+        else{
+            req.flash("error","Wrong email or password");
+            return res.redirect("/");
+        }
     });
     }
     catch(err){
@@ -60,6 +71,12 @@ module.exports.loginUser = async (req,res) => {
 }
 
 module.exports.logoutUser = function(req,res){
-    res.cookie("token","");
-    res.redirect("/");
+    try{
+        res.cookie("token","");
+        req.flash("error","Logged out successfully");
+        res.redirect("/");
+       }
+       catch(err){
+        console.log(err.message);
+       }
 }

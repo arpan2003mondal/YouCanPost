@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const {registerUser,loginUser,logoutUser} = require("../controllers/authControllers");
 const userModel = require("../models/user-model");
 const postModel = require("../models/post-model");
@@ -8,25 +9,23 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 
 const upload = require("../config/multer-config");
 
-router.get('/create',(req,res)=>{
-    res.render('register');
-})
 
 router.post("/register",registerUser);
 
-router.get('/login',(req,res)=>{
-    res.render('login');
-})
 
-router.post("/loginAccount",loginUser);
+router.post("/login",loginUser);
 
 
 router.get("/logout",logoutUser)
 
 router.get('/profile',isLoggedIn,async (req,res)=>{
    try{
+    let messages = {
+        error: req.flash("error"),
+        success: req.flash("success")
+    };
     let user = await userModel.findOne({email:req.user.email}).populate("posts");
-    res.render("profile",{user});
+    res.render("profile",{user,messages});
    }
    catch(err){
     console.log(err.message);
@@ -54,15 +53,17 @@ router.post('/profile/update',isLoggedIn,async (req,res)=>{
         },
     };  
     await userModel.updateMany(filter, updateDocument);
+    req.flash("success","Profile updated successfully");
     res.redirect("/users/profile");
     }
     catch(err){
-        console.log(err.message);
+        req.flash("error","Unsuccessful: Error message : "+err.message);
+        res.redirect("/users/profile");
     }
 });
 
 
-router.get('/password/change',async (req,res)=>{
+router.get("/password/change",async (req,res)=>{
     res.render("updatePassword");
 })
 
@@ -80,15 +81,18 @@ router.post('/password/change',isLoggedIn, async (req,res)=>{
                      user.password = hash;
                      await user.save();
                      }); 
-                 res.redirect('/users/login?message=Password changed successfully');
+                req.flash("success","Password Changed Successfully");
+                res.redirect("/users/profile");
          });
      }else {
-         res.redirect('/users/profile');
+        req.flash("error","Unsuccessful: Old password does not match");
+        res.redirect('/users/profile');
      }
      });
     }
     catch(err){
-     console.log(err.message);
+        req.flash("error","Unsuccessful: Error message : "+err.message);
+        res.redirect("/users/profile");
     }  
  });
 
@@ -96,15 +100,14 @@ router.post("/profileImage/upload",isLoggedIn,upload.single("image"), async (req
    try{
     let user = await userModel.findOne({email:req.user.email});
 
-//    console.log(user);
-//    console.log(req.file.buffer);
     user.profileImage = req.file.buffer;
     await user.save();
-
+    req.flash("success","Profile photo uploaded");
     res.redirect("/users/profile");
    }
    catch(err){
-    console.log(err.message);
+    req.flash("error","Unsuccessful: Error message : "+err.message);
+    res.redirect("/users/profile");
    }
 });
 

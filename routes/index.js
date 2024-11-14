@@ -6,19 +6,28 @@ const postModel = require("../models/post-model");
 const isLoggedIn = require("../middlewares/isLoggedIn");
 
 router.get("/",(req,res)=>{
-    res.render("index");
+    let messages = {
+        error: req.flash("error"),
+        success: req.flash("success")
+    };
+    res.render("index", { messages ,loggedin:false});
 });
 
 
 router.get("/allposts",isLoggedIn, async (req,res)=>{
+    
     try {
-       
+
+        let messages = {
+            error: req.flash("error"),
+            success: req.flash("success")
+        };
         const posts = await postModel.find()
             .populate("user")           
             .populate("likes")         
             .exec();
 
-        res.render("allposts", { posts });  
+        res.render("allposts", { posts , messages});  
     } catch (error) {
         res.status(500).send('Error fetching posts');
         console.error(error.message);

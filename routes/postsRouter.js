@@ -18,11 +18,12 @@ router.post("/create",isLoggedIn,async (req,res)=>{
 
     user.posts.push(post._id);
     await user.save();
-
+    req.flash("success","New post created");
     res.redirect("/users/profile");
   }
   catch(err){
-    console.log(err.message);
+    req.flash("error","Unsuccessful: Error message : "+err.message);
+    res.redirect("/users/profile");
   }
 });
 
@@ -32,8 +33,15 @@ router.get("/edit/:id",isLoggedIn,async (req,res)=>{
 });
 
 router.post("/update/:id",isLoggedIn,async (req,res)=>{
+    try{
     let post = await postModel.findOneAndUpdate({_id:req.params.id},{content : req.body.content});
+    req.flash("success","Your post is updated");
     res.redirect("/users/profile");   
+    }
+    catch(err){
+        req.flash("error","Unsuccessful: Error message : "+err.message);
+        res.redirect("/users/profile");
+    }
 });
 
 router.get('/delete/:id',isLoggedIn,async (req,res)=>{
@@ -44,11 +52,12 @@ router.get('/delete/:id',isLoggedIn,async (req,res)=>{
     await owner.save();
 
     await postModel.deleteOne({_id:req.params.id});
-    
+    req.flash("success","Your post is deleted");
     res.redirect("/users/profile");
     }
     catch(err){
-        console.log(err.message);
+        req.flash("error","Unsuccessful: Error message : "+err.message);
+        res.redirect("/users/profile");
     }
 });
 
@@ -65,13 +74,15 @@ router.get('/like/:id',isLoggedIn,async (req,res)=>{
     }
     else{
         post.likes.splice(post.likes.indexOf(req.user.id),1);
-    }
-        
+    } 
     await post.save();
-    res.redirect("/allposts");
+    req.flash("success","You liked the post");
    }
    catch(err){
-    console.log(err.message);
+    req.flash("error","Unsuccessful: Error message : "+err.message);
+   }
+    finally{
+    res.redirect("/allposts");
    }
 });
 
@@ -87,13 +98,15 @@ router.get('/unlike/:id',isLoggedIn,async (req,res)=>{
     }
     else{
         post.unlikes.splice(post.unlikes.indexOf(req.user.userid),1);
-    }
-    
+    }   
+    req.flash("success","You unliked the post");
     await post.save();
-    res.redirect("/allposts");
    }
    catch(err){
-    console.log(err.message);
+    req.flash("error","Unsuccessful: Error message : "+err.message);
+   }
+   finally{
+    res.redirect("/allposts");
    }
 }); 
 

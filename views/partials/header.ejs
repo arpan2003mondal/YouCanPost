@@ -10,4 +10,21 @@
 </head>
 
 <body class="font-['helvetica_now_display']">
-  
+    <nav class="w-full fixed flex justify-between top-0 left-0 px-5 rounded-md py-3 bg-zinc-800">
+        <h3 class="text-3xl  text-lime-300 font-bold ">Post Creator</h3>
+        <% var loggedIn = typeof loggedin !== "undefined"? loggedin : true %>
+        <%if(loggedIn){%>
+        <div class="flex justify-around gap-6 text-xl mr-4 ml-2">
+            <a class="text-green-500  " href="/users/profile"> Profile</a>
+            <a class="text-orange-500 " href="/allposts">All Posts</a>    
+            <a class="text-violet-500 " href="/users/password/change">Change Password</a>
+            <a class="text-green-500  " href="/users/profile/update">Edit Profile</a>
+            <a class="text-red-500  " href="/users/logout">Logout</a>
+     
+        </div>
+
+        <% } %>
+    </nav>
+
+   
+    
