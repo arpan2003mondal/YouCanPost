@@ -28,9 +28,9 @@ router.get("/allposts",isLoggedIn, async (req,res)=>{
             .exec();
 
         res.render("allposts", { posts , messages});  
-    } catch (error) {
-        res.status(500).send('Error fetching posts');
-        console.error(error.message);
+    } catch (err) {
+        req.flash("error","Unsuccessful: Error message : "+err.message);
+        res.redirect("/users/profile");
     }
 });
 
