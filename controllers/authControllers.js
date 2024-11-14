@@ -10,6 +10,11 @@ module.exports.registerUser = async (req,res) => {
     try{
         let {name,username,email,password,age} = req.body;
 
+        if (!name || !username || !email || !password || !age) {
+            req.flash("error", "All fields are required!");
+            return res.redirect("/");
+        }
+
         let user = await userModel.findOne({email});
     
         if(user) {

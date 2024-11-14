@@ -11,6 +11,11 @@ router.post("/create",isLoggedIn,async (req,res)=>{
     let user = await userModel.findOne({email:req.user.email});
     let {content} = req.body;
 
+    if (!content || content.trim() === "") {
+        req.flash("error", "Post content cannot be empty.");
+        return res.redirect("/users/profile");
+      }
+
     let post = await postModel.create({
         user:user._id,
         content
@@ -99,7 +104,7 @@ router.get('/unlike/:id',isLoggedIn,async (req,res)=>{
     else{
         post.unlikes.splice(post.unlikes.indexOf(req.user.userid),1);
     }   
-    req.flash("success","You unliked the post");
+    req.flash("error","You unliked the post");
     await post.save();
    }
    catch(err){

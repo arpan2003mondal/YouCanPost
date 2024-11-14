@@ -73,6 +73,11 @@ router.post('/password/change',isLoggedIn, async (req,res)=>{
     try{
      let user = await userModel.findOne({email:req.user.email});
      let {currentpassword,newpassword} = req.body;
+
+     if ( (newpassword && newpassword.trim() === "") || (newpassword === currentpassword)) {
+        req.flash("error", " new password cannot be blank or same as old password.");
+        return res.redirect("/users/profile");
+      }
  
      bcrypt.compare(currentpassword,user.password,function(err,result){    
          if(result) {        

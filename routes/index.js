@@ -25,9 +25,11 @@ router.get("/allposts",isLoggedIn, async (req,res)=>{
         const posts = await postModel.find()
             .populate("user")           
             .populate("likes")         
+            .populate("unlikes") 
             .exec();
 
-        res.render("allposts", { posts , messages});  
+        res.render("allposts", { posts, messages });
+
     } catch (err) {
         req.flash("error","Unsuccessful: Error message : "+err.message);
         res.redirect("/users/profile");
