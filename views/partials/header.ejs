@@ -11,15 +11,16 @@
 
 <body class="font-['helvetica_now_display']">
     <nav class="w-full fixed flex justify-between top-0 left-0 px-5 rounded-md py-3 bg-zinc-800">
-        <h3 class="text-3xl  text-lime-300 font-bold ">Post Creator</h3>
+        <h3 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-emerald-400 to-green-500 drop-shadow-lg">YouCanPost</h3>
         <% var loggedIn = typeof loggedin !== "undefined"? loggedin : true %>
         <%if(loggedIn){%>
         <div class="flex justify-around gap-6 text-xl mr-4 ml-2">
-            <a class="text-green-500  " href="/users/profile"> Profile</a>
-            <a class="text-orange-500 " href="/allposts">All Posts</a>    
-            <a class="text-violet-500 " href="/users/password/change">Change Password</a>
-            <a class="text-green-500  " href="/users/profile/update">Edit Profile</a>
-            <a class="text-red-500  " href="/users/logout">Logout</a>
+            <a class="text-green-500 hover:text-green-400 focus:text-green-400 transition-colors duration-300  " href="/users/profile"> Profile</a>
+            <a class="text-orange-400 hover:text-orange-300 transition-colors duration-200" href="/allposts">All Posts</a>    
+            <a class="text-purple-400 hover:text-purple-300 transition-colors duration-200" href="/users/password/change">Change Password</a>
+            <a class="text-teal-400 hover:text-teal-300 transition-colors duration-200" href="/users/profile/update">Edit Profile</a>
+            <a class="text-red-400 hover:text-red-300 transition-colors duration-200" href="/users/logout">Logout</a>
+            
      
         </div>
 
