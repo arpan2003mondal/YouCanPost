@@ -1,0 +1,1 @@
+Post Creation and User Profile Management System: Developed a webpage where users can register, create new posts, view posts from others, update their profiles, set profile photos, and like/unlike posts, using Node.js, Express, MongoDB, and Tailwind CSS for a seamless user experience.
