@@ -1,3 +1,3 @@
 {
-    "MONGODB_URI":"mongodb+srv://PostCreation:mf26hZI2ZUZUDtu8@arpan.lisgh.mongodb.net/PostCreation"
+    "MONGODB_URI":"<your username and password in mongodb atlas>"
 }

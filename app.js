@@ -17,6 +17,7 @@ const postsRouter = require("./routes/postsRouter");
 const indexRouter = require("./routes/index");
 
 
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname,"public")));
@@ -48,6 +49,6 @@ app.set("view engine","ejs");
 
 
 
-  //app.listen(3000);   // Starts the server, listening on port 3000 for incoming requests.
+app.listen(3000);   // Starts the server, listening on port 3000 for incoming requests.
 
-module.exports = app;
+//module.exports = app;
